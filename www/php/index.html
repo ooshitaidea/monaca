@@ -1,0 +1,16 @@
+<?php
+
+mb_language("Japanese");
+mb_internal_encoding("UTF-8");
+
+$to      = 'ooshita@ideaideal.jp';
+$subject = 'タイトル';
+$message = '本文';
+$headers = 'From: from@hoge.co.jp' . "\r\n";
+
+mb_send_mail($to, $subject, $message, $headers);
+
+echo '<script type="text/javascript">' ;
+echo 'alert("ok");' ;
+echo '</script>' ;
+EOM;

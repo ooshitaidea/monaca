@@ -1,0 +1,524 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+	<script src="components/loader.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMoExTGwRsrTP347BpdwHJC74f5FmC6Ao" type="text/javascript"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="ncmb-1.2.6.js"></script>
+<link href='fullcalendar/fullcalendar.css' rel='stylesheet' />
+<script src="fullcalendar/lib/moment.min.js"></script>
+<script src="fullcalendar/fullcalendar.js"></script>
+<script src="fullcalendar/gcal.js"></script>
+<script src="fullcalendar/ja.js"></script>
+<script src="js/memo.js"></script>
+<script src="js/app.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/map.js"></script>
+<script src="js/cssua.min.js"></script>
+<script src="js/reset.js"></script>
+</head>
+<body ng-controller="onsen" data-role="sidemenu-container" data-sidemenu-dir="right">
+	 <div id="karenda">
+		<div class="kanri_f"></div>
+		<div id='calendar'></div>
+		    <div class="calendar_f"></div>
+		    <ul id="calendar_li">
+		    </ul>
+		    <div class="kanri_f"></div>
+		    <div class="kanrimenu_f admin"></div>
+	</div>
+	 <div class="load">
+		<div class="load-mask"><i class="fa fa-spinner  fa-4x fa-spin"></i><br><span id="load_txt">ロード中</span></div>
+	</div>
+    <!--<script src="https://cdn.rawgit.com/OnsenUI/OnsenUI/1.3.0-beta/build/js/onsenui.min.js"></script>-->
+	<script src="js/onsenui.js"></script>
+    
+    
+    
+<!-- ログインページ -->
+<div data-role="page" id="LoginPage">
+        <div class="s_head cf" style="background:#4a67ad;">
+            <h1>ログイン</h1>
+		</div>
+      <section data-role="content" style="background:#f5f6f8;">
+		    <div class="kanri_f"></div>
+	<div id='calendar2'></div>
+      <div class="text_area">アプリのご利用にはログインまたは新規登録が必要になります。<br />
+      新規登録の際には園が指定したパスコードが必要になります。<br />
+      パスコードについては園にお問合せください。<br><br>
+      </div>
+      <div class="from_area">
+      <label>保護者名</label>
+        <input type="text" id="login_username" class="form_sen">
+		<!--<input type="text" id="login_username" placeholder="ユーザーID">-->
+      <label>パスワード</label>
+		<input type="password" id="login_password" class="form_sen">
+		<!--<input type="password" id="login_password" placeholder="パスワード">-->
+      </div>
+        <div onclick="onLoginBtn()" class="blue_btn">ログイン</div>
+        <div class="regbtn"><a href="#" onclick="RegisterPage()">新規登録<i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+        <div class="regbtn"><a href="#myhelpPage">パスワードを忘れた方は<i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+         <!--<img src="img/boy.png" class="kuma" onclick="aratto()">-->
+		    <div class="kanri_f"></div>
+		    <div align="center">Ver.<span id="ver"></span></div>
+		    <div class="kanri_f"></div>
+
+    <!--<div onclick="aratto()"><img src="img/boy.png" class="btn4"></div>-->
+
+      </section>
+  </div>
+
+<!-- トップページ -->
+<div data-role="page" id="TopPage">
+    <div class="topback">
+    <div class="titleblock">
+    <div class="header_bg" id="result"></div>
+         <img src="img/appname.png" class="title">
+         <img src="img/girl.png" class="usagi">
+         <img src="img/boy.png" class="kuma" onclick="aratto()">
+	     <div class="enter_btn" onclick="menupage()">ENTER</div>
+	<img src="img/logo.png" class="logo">
+    <div class="header_bg" id="result"></div>
+	<div class="top_txt">このアプリには通信が必要です。<br>通信環境をご確認ください。</div>
+	<div class="yama"></div>
+		<div class="test_btn" id="test_btn" >
+		</div>
+	</div><!--titleblock-->
+    </div><!--topback-->
+</div><!--toppage-->
+<script>
+function test_script() {
+}
+</script>
+
+    
+
+<div data-role="page" id="calendarpage">
+	<div class="s_head cf" style="background:#21c334">
+		<a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+		<h1>幼稚園カレンダー</h1>
+	</div>
+	<div class="calendar_menu">
+		<div class="blue_btn admin add" onclick="event_tuikapage()">予定追加</div>
+		<ul>
+			<li class="remove" onclick="calendar_remove()"><i class="fa fa-chevron-left" aria-hidden="true"></i>　前月</li>
+			<li class="next" onclick="calendar_next()">次月　<i class="fa fa-chevron-right" aria-hidden="true"></i></li>
+		</ul>
+	</div>
+</div>
+
+    
+    <!-- メニューページ -->
+    <div data-role="page" id="MenuPage" class="back_s" style="background:#fff;">
+        <div class="s_head cf" style="background:#ff5a60">
+            <a href="#TopPage"><img src="img/back.png" class="modoru"></a>
+            <h1>MENU</h1>
+		</div>
+        <section data-role="content" class="menu_page">
+			<ul id="menu_list">
+			<div class="menu_s_20">　</div>
+			<li onclick="osirase()" class="cf">				<div class="menu_icon"><img src="img/menu_01.png">　</div><div class="menu"><div class="text">お知らせ　<span id="oshirase_count"></span></div></div></li>
+			<li onclick="photopage()" class="cf">					<div class="menu_icon"><img src="img/menu_02.png">　</div><div class="menu"><div class="text">Photo Album　<span id="photo_count"></span></div></div></li>
+			<li onclick="admincontactpage()" class="cf admin">	<div class="menu_icon"><img src="img/menu_03.png">　</div><div class="menu"><div class="text">トークルーム</div></div></li>
+			<li class="contact_btn ippan" name="menu">					<div class="menu_icon"><img src="img/menu_03.png">　</div><div class="menu"><div class="text">トークルーム</div></div></li>
+			<li onclick="homepage()" class="cf">			<div class="menu_icon"><img src="img/menu_04.png">　</div><div class="menu"><div class="text">ホームページ</div></div></li>
+			<li onclick="calendar_open();" class="cf">		<div class="menu_icon"><img src="img/menu_05.png">　</div><div class="menu"><div class="text">幼稚園カレンダー</div></div></li>
+			<li onclick="map_open();" class="cf">			<div class="menu_icon"><img src="img/menu_06.png">　</div><div class="menu end"><div class="text">バスマップ</div></div></li>
+			<div class="menu_s_10"></div>
+			<li class="admin cf" onclick="toukou_app();">	<div class="menu_icon"><img src="img/menu_01.png">　</div><div class="menu"><div class="text">お知らせ投稿</div></div></li>
+			<li onclick="Phototouroku_page()" class="cf admin">			<div class="menu_icon"><img src="img/menu_02.png">　</div><div class="menu"><div class="text">写真撮影・登録</div></div></li>
+			<li onclick="kanri_page()" class="cf admin">			<div class="menu_icon"><img src="img/menu_09.png">　</div><div class="menu"><div class="text">保護者確認・連絡</div></div></li>
+			<li onclick="ClassPage()" class="cf">					<div class="menu_icon"><img src="img/menu_07.png">　</div><div class="menu"><div class="text">各種設定</div></div></li>
+			<li onclick="onLogoutBtn();" class="cf">		<div class="menu_icon"><img src="img/menu_08.png">　</div><div class="menu end"><div class="text">ログアウト</div></div></li>
+			<div class="menu_s_end"></div>
+			<div class="ver">Ver.<span id="ver"></span></div>
+        	</ul>
+        </section>
+    </div>
+    
+    
+    <!-- 違反ページ -->
+    <div data-role="page" id="ihan">
+        <div class="menu_head cf">
+            <h1>アクセスできません</h1>
+		</div>
+        <section data-role="content">
+		    <div class="kanri_f"></div>
+        	<div class="ihan">ご利用中の端末は現在アクセス制限が掛かっています。<br /><br />身に覚えがない場合、園にお問合せください。</div>
+        </section>
+    </div>
+    <div data-role="page" id="ListPage">
+    	<div class="suke_head cf">
+            <a href="#MenuPage" data-icon="back"><img src="img/back.png" class="modoru"></a>
+            <h1>スケジュール帳</h1>
+		</div>
+    	<div align="center">
+            <a href="#AddPage" data-icon="plus" class="ui-btn-right"><img src="img/new.png" class="sinki"></a>
+		</div>
+        <section data-role="content">
+            <ul id="TopListView" data-role="listview" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-split-icon="delete">
+            </ul>
+	<div id="show_dialog"></div>
+        
+    </section>
+    </div>
+   
+    
+
+    <!-- フォトメニューページ -->
+    <div data-role="page" id="photomenu" class="photoback">
+        <div class="s_head cf" style="background:#a07aff">
+            	<a href="#" onclick="menupage()"><img src="img/back.png" class="modoru"></a>
+            <h1>Photo Album</h1>
+    	</div>
+        <section data-role="content" class="photoback">
+		    <div class="kanri_f"></div>
+        <div id="photojyokyo"></div>
+        <!--
+        <div class="photo_text">
+        保育者が撮影した園児の写真をご覧いただけます。<br>
+        全クラスか各クラスごとに、写真をご覧いただけます。<br>
+        </div>
+        -->
+            <ul class="classlist">
+            </ul>
+            
+		    <div class="kanri_f"></div>
+        </section>
+    </div>
+    <script>
+	//ページ移動
+	$(function(){
+	});
+    </script>
+
+
+    <!-- フォトギャラリーページ -->
+    <div data-role="page" id="photoPage">
+    <div class="photoback">
+        <div class="s_head cf" style="background:#a07aff">
+            <a href="#photomenu"><img src="img/back.png" class="modoru"></a>
+            <h1 id="photo_title">Photo Album</h1>
+    	</div>
+        <section data-role="content" class="photoback">
+		    <div class="kanri_f"></div>
+  <ul id="Parks" class="just">
+	<!--ここに読み込む-->
+  </ul>
+		    <div class="kanri_f"></div>
+        </section>
+        </div>
+    </div>
+    
+
+<!-- 保護者登録ページ -->
+	<div data-role="page" id="RegisterPage" class="back_s">
+        <div class="s_head cf" style="background:#4a67ad">
+			<a href="#LoginPage"><img src="img/back.png" class="modoru"></a>
+			<h1>新規登録</h1>
+		</div>
+		<section data-role="content">
+		<div id="tourokumemo"></div>
+		<div id="tourokumenu">
+		<span id="group"></span>
+		<span class="touroku_title">保護者情報登録</span>
+		<div class="touroku_txt">全ての項目を入力してください。</div>
+		<div class="from_area3"><br>
+		保護者名<div id="regi1"></div>
+		<input type="text" id="reg_username" class="form_sen">
+		パスワード<div id="regi2"></div>
+        <input type="password" id="reg_password" class="form_sen">
+		メールアドレス<div id="regi3"></div>
+        <input type="email" id="reg_email" class="form_sen">
+		パスコード<br>※園からお聞きください
+        <input type="text" id="reg_passcode" class="form_sen">
+        </div><!--tourokumenu-->
+        </div>
+        <div class="textarea4">
+		お子さんのクラスを選択してください<br>(複数選択可)<div id="regi4"></div>
+		</div>
+		<div id="form_box">
+		<div id="regista_class"></div>
+		</div>
+        <div id="regi5"></div>
+        <div onclick="onRegisterBtn2()" class="blue_btn">新規登録</div>
+      </section>
+</div>
+       
+       
+       
+  <!-- ど忘れ用ページ -->
+  <div data-role="page" id="myhelpPage" class="back_s">
+        <div class="s_head cf" style="background:#4a67ad">
+            <a href="#LoginPage"><img src="img/back.png" class="modoru"></a>
+            <h1>パスワード確認</h1>
+		</div>
+      <section data-role="content">
+      <div id="tourokumemo"></div>
+        <div class="text_area">
+      <span id="group"></span>登録時に使用したパスコードと、メールアドレスを入力してください。
+      </div>
+      <div class="from_area3">
+      パスコード<br>※(園にお聞きください)<br><span id="er1"></span>
+        <input type="text" id="my_passcode" class="form_sen">
+	<!--<div id="my1"><div class="blue_btn" onclick="myhelp_tanmatu()">端末IDチェック</div></div>-->
+        
+      <!--ユーザー名(保護者名)
+        <input type="text" id="my_username">
+        <div id="my2"><div class="b_btn" id="myhelp_name">ユーザ名から登録メールアドレスをチェック</div></div>-->
+      メールアドレス
+        <input type="email" id="my_email" class="form_sen">
+        <div id="my3"><div class="blue_btn" onclick="pass_replay()">パスワードの確認</div></div>
+        </div>
+      </section>
+  </div>
+  
+  
+<!-- 情報変更ページ -->
+<div data-role="page" id="Class">
+	<div class="s_head cf" style="background:#2997ff">
+		<a href="#TopPage"><img src="img/back.png" class="modoru"></a>
+		<h1>各種設定</h1>
+	</div>
+	<section data-role="content" class="ippan">
+		<div class="kanri_f"></div>
+		<div class="text_area4">
+			現在設定しているクラスは<br>「<span id="myclass"></span>」です。
+		</div>
+		<div id="class_henkou"></div>
+		<div id="form_box"></div>
+	</section>
+	
+	<section data-role="content" class="admin">
+	<div class="kanri_f"></div>
+	<div class="text_area">
+	【バス情報設定】<br>
+	現在設定中のバス「<span id="mybus">登録なし</span>」
+	</div>
+		<div id="class_check">
+		</div>
+	<div onclick="onBusHenkouBtn()" class="blue_btn">バス情報を設定</div>
+	<div id="bus_log"></div>
+	</section>
+	    
+	<section data-role="content">
+	<div class="kanri_f"></div>
+		<div class="text_area">
+	【Photo Albumの更新情報受信設定】<br>
+		現在の設定「<span id="imgpush_now">受信しない</span>」
+		</div>
+		<div onclick="onimgHenkou()" class="blue_btn" id="img_henkou_btn" name="受信する">受信する</div>
+	</section>
+	    
+	<section data-role="content" class="admin">
+	<div class="kanri_f"></div>
+		<div class="text_area">
+		【パスコードの設定】
+		<br>現在の一般向けパスコード「<span id="pass_code"></span>」
+		<br>現在の管理者用パスコード「<span id="admin_pass_code"></span>」<br>
+		一般向け・管理者用パスコードを変更する場合変更後のパスコードを入力して変更ボタンを押してください。
+		</div>
+		<div class="from_area">
+		<input type="text" id="cpasscode" class="n_form" placeholder="一般向けパスコード" value="">
+		<input type="text" id="cpasscode2" class="n_form" placeholder="管理者用パスコード" value="">
+		</div>
+	<div onClick="passcode_henkou()" class="blue_btn">変更</div>
+	</section>
+	
+	
+	<div class="kanri_f"></div>
+  </div>
+  
+  <!-- 写真登録ページ（管理者用） -->
+  <div data-role="page" id="Phototouroku">
+        <div class="s_head cf" style="background:#a07aff">
+            <a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+            <h1>写真撮影</h1>
+		</div>
+		    <div class="kanri_f"></div>
+		    <div class="kanri_f"></div>
+    <div id="upkakunin" align="center"></div>
+      <section data-role="content">
+	<div class="cf">
+    <div class="buttonlarge" onclick="snapPicture()">撮影する</div>
+    <div class="file" onclick="snapPicture2()">ファイル選択</div>
+    <!--<input type="file"  class="file" id="file_photo">-->
+    </div>
+		<div class="from_area">
+		<input type="text" id="imgname" class="n_form" placeholder="写真のタイトルを入力してください" value="">
+		<textarea id="img_honbunname" class="n_form" name="kanso" cols="40" rows="4" placeholder="お知らせ内容を入力してください"></textarea>
+		</div>
+    <div id="camerajyokyo" align="center"></div>
+    <div id="picture_area" align="center"></div>
+		<div class="text_area2">メッセージを届けるクラスを選択してください（複数選択可）</div>
+		<div id="form_box">
+		<div id="photo_form_checkbox">
+		</div>
+		</div>
+
+	
+		    <br><div class="blue_btn" onClick="onFormSend()">登録</div>
+		    <br><div class="blue_btn2">登録中・・・</div>
+		    <div class="kanri_f"></div>
+      </section>
+  </div>
+  
+  <!--お知らせページ-->
+    <div data-role="page" id="OSIRASE">
+    	<div class="oshiraseback">
+	        <div class="s_head cf" style="background:#2997ff">
+            <a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+	            <h1>お知らせ</h1>
+			</div><!--oshirase_head-->
+			<div id="newsFrame">
+				<div id="my_class"></div>
+				<ul id="push_list"></ul>
+	        </div><!--newsFrame-->
+		    <div class="kanrimenu_f admin"></div>
+         </div><!--oshiraseback-->
+    </div>
+  
+  <!-- お知らせ登録ページ（管理者用） -->
+  <div data-role="page" id="oshirase_touroku">
+        <div class="s_head cf" style="background:#2997ff">
+            <a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+            <h1>お知らせの発信</h1>
+		</div>
+		    <div class="kanri_f"></div>
+		    
+    <div id="oshirase_upkakunin" align="center"></div>
+      <section data-role="content">
+		<div class="from_area">
+		<input type="text" id="oshirase_imgname" class="n_form" placeholder="お知らせタイトルを入力してください" value="">
+		<textarea id="oshirase_honbunname" class="n_form" name="kanso" cols="40" rows="4" placeholder="お知らせ内容を入力してください"></textarea>
+		</div>
+	<div class="cf">
+    <div class="buttonlarge" onclick="oshirase_snapPicture()">撮影する</div>
+    <div class="file" onclick="oshirase_snapPicture2()">ファイル選択</div>
+	</div>
+    <div id="oshirase_camerajyokyo" align="center"></div>
+    <div id="oshirase_picture_area" align="center"></div>
+		<div class="text_area2">メッセージを届けるクラスを選択してください（複数選択可）</div>
+		<div id="form_box">
+		<div id="oshirase_photo_form_checkbox">
+		</div>
+		</div>
+
+	
+		    <br><div class="blue_btn" onClick="oshirase_onFormSend()">登録</div>
+		    <br><div class="blue_btn2">登録中・・・</div>
+		    <div class="kanri_f"></div>
+      </section>
+  </div>
+  
+  <!-- カレンダー登録ページ（管理者用） -->
+  <div data-role="page" id="event_touroku">
+        <div class="s_head cf" style="background:#21c334">
+            <a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+            <h1>カレンダー登録</h1>
+		</div>
+		    <div class="kanri_f"></div>
+
+    <div id="oshirase_upkakunin" align="center"></div>
+      <section data-role="content">
+		<div class="text_area">
+		カレンダーに追加するイベント内容を入力してください。
+		</div>
+		<div class="from_area">
+		<input type="text" id="event_name" class="n_form" placeholder="イベントのタイトルを入力してください。">
+		</div>
+		<div class="text_area" align="center">開催日を選択してください。</div>
+		<div class="from_area">
+            <div id="event_time_area"></div>
+		</div>
+		<div class="text_area">クラス選択してください<br>(複数選択可)</div>
+		<div id="form_box">
+		<div id="event_checkbox">
+		</div>
+		</div>
+		    <br><div class="blue_btn" onClick="event_tuika()">登録</div>
+		    <br><div class="blue_btn2">登録中・・・</div>
+		    <div class="kanri_f"></div>
+      </section>
+  </div>
+
+<!-- マッピングページ（管理者用） -->
+<div data-role="page" id="map_page">
+	<div class="s_head cf" style="background:#ff8c36;">
+		<a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+            <h1>バスマップ</h1>
+		</div>
+	<div class="kanri_f"></div>
+	<section data-role="content">
+		<div class="bus_blcok cf">
+			<div class="bus_btn ippan" id="savespot" style="background:#34a9db;"><div class="icon"><img src="img/bus_pin.png"></div>現在地を<br>バス停に登録</div>
+			<div id="bus_sousin_btn">
+				<div class="bus_btn admin" id="sousin" style="background:#34a9db;"><div class="icon"><img src="img/bus_pin2.png"></div>現在地<br>発信開始</div>
+			</div>
+			<div class="bus_btn admin" onClick="ClassPage()" style="background:#999;"><div class="icon"><img src="img/bus_pin2.png"></div>バス情報<br>設定変更</div>
+			<div class="bus_btn admin">　</div>
+			<div class="bus_btn admin" id="no_sousin">　</div>
+			<!--<div class="bus_btn" id="bus_test" style="background:#999;"><div class="icon"><img src="img/bus_pin2.png"></div>バス用テストボタン</div>-->
+			<span id="viwe"></span>
+		</div>
+			<!--<br><div class="blue_btn2">登録中・・・</div>-->
+		    <!--<br>設定されているバス「<span id="bus_name">未登録</span>」-->
+		    <!--<div id="sousin" class="blue_btn blue_btn4" onClick="sousin()">現在地発信開始</div>-->
+		    <!--<div id="sousin" class="blue_btn3" onClick="sousin()">バス情報は設定変更から</div>-->
+		    <!--<br><div class="blue_btn" onClick="search()">登録されたポイントを表示</div>-->
+		<div class="from_area">
+		    </div>
+		    <br>
+        <div id="map_log"></div>
+        <div id="map_time"></div>
+        <div id="map_canvas" style="width:100%; height:400px;"></div>
+		    <div class="kanri_f"></div>
+      </section>
+  </div>
+
+  <!-- ユーザー確認ページ（管理者用） -->
+  <div data-role="page" id="kanri_page">
+        <div class="s_head cf" style="background:#ff2c55">
+            <a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+            <h1>保護者確認・連絡</h1>
+		</div>
+		    <div class="kanri_f"></div>
+		<div class="text_area">保護者の名前をタップすると、その方に<br>メッセージを送信することができます。</div>
+		<div class="box_area">
+		</div><!--box_area--> 
+		    <div class="kanri_f"></div>
+  </div>
+  
+
+
+	<!--コンタクトページ-->
+    <div data-role="page" id="contactpage">
+    	<div class="contactback">
+	        <div class="contact_head cf">
+            <a href="#MenuPage"><img src="img/back.png" class="modoru"></a>
+	            <h1 class="talk_user">トークルーム</h1>
+			</div><!--oshirase_head-->
+			
+			<div id="newsFrame">
+				<div id="my_class"></div>
+				<ul id="contact_list">
+				
+				</ul>
+	        </div><!--newsFrame-->
+        	<!--<a href="#" class="contactbtn" id="contactpushBtn" data-role="button" data-inline="false" data-theme="b">送る</a>-->
+	      <div id="pushbtn" class="cf"></div>
+         </div><!--oshiraseback-->
+    </div>
+    
+    
+
+    
+    
+    
+    
+</body>
+</html>
